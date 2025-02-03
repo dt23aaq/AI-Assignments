@@ -3,6 +3,18 @@ Initialize the GridWorld with a specified number of rows and columns.
         The agent starts in the middle of the grid.
 """
 class GridWorld:
+
+    def move_agent_west(self):
+        """
+        Move the agent one step to the left (west).
+        """
+        x, y = self.agent_position
+        if y > 0:  # Ensure the agent doesn't move out of bounds
+            self.grid[x][y] = ' '  # Clear the current position
+            y -= 1  # Move left
+            self.grid[x][y] = 'A'  # Place the agent in the new position
+            self.agent_position = (x, y)  # Update the agent's position
+
     def __init__(self, rows=5, cols=5):
         self.rows = rows
         self.cols = cols
