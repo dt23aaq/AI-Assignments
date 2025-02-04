@@ -27,7 +27,6 @@ class GridWorld:
 
     def moveAgentWestBouncy(self):
         current_row, current_col = self.agentPosition
-        
         # Check if the agent can move west (left)
         if current_col > 0:
             # Update the grid
@@ -39,6 +38,17 @@ class GridWorld:
             # If at the western boundary, reflect back
             print("Agent is at the western boundary, bouncing back.")
             # No change to position, just print a message
+    def moveNorthAroundTheWorld(self):
+        current_row, current_col = self.agentPosition
+        # Move north (up)
+        current_row -= 1
+        # Wrap around if moving off the top edge
+        if current_row < 0:
+            current_row = self.rows - 1  # Wrap to the bottom
+        # Update the grid
+        self.grid[self.agentPosition[0]][self.agentPosition[1]] = 0  # Clear current position
+        self.grid[current_row][current_col] = 1  # Mark new position
+        self.agentPosition = (current_row, current_col)  # Update agent's position
 
     def displayGrid(self):
         """
