@@ -9,11 +9,38 @@ class GridWorld:
         # Create a grid filled with empty spaces
         self.grid = [[' ' for _ in range(cols)] for _ in range(rows)]
         # Set the initial position of the agent in the middle of the grid
-        self.agent_position = (rows // 2, cols // 2)
+        self.agentPosition = (rows // 2, cols // 2)
         # Place the agent (represented by 'A') in the grid
-        self.grid[self.agent_position[0]][self.agent_position[1]] = 'A'
+        self.grid[self.agentPosition[0]][self.agentPosition[1]] = 'A'
+        # Set the goal position (represented by 'G') in the grid
+    def moveAgentWest(self):
+        current_row, current_col = self.agentPosition  # Getting the current position of the agent
+        # Check if the agent can move west (left)
+        if current_col > 0:
+            # Update the grid
+            self.grid[current_row][current_col] = 0  # Clear current position
+            current_col -= 1  # Move west
+            self.grid[current_row][current_col] = 1  # Mark new position
+            self.agentPosition = (current_row, current_col)  # Update agent's position
+        else:
+            print("Agent can't be move to west, agent is at the left of the grid.")
 
-    def display_grid(self):
+    def moveAgentWestBouncy(self):
+        current_row, current_col = self.agentPosition
+        
+        # Check if the agent can move west (left)
+        if current_col > 0:
+            # Update the grid
+            self.grid[current_row][current_col] = 0  # Clear current position
+            current_col -= 1  # Move west
+            self.grid[current_row][current_col] = 1  # Mark new position
+            self.agentPosition = (current_row, current_col)  # Update agent's position
+        else:
+            # If at the western boundary, reflect back
+            print("Agent is at the western boundary, bouncing back.")
+            # No change to position, just print a message
+
+    def displayGrid(self):
         """
         Display the current state of the grid.
         """
@@ -21,13 +48,13 @@ class GridWorld:
             print(' '.join(row))  # Print each row of the grid
         print()  # Print a new line for better readability
 
-    def move_agent(self, direction):
+    def moveAgent(self, direction):
         """
         Move the agent in the specified direction.
         Valid directions are 'up', 'down', 'left', and 'right'.
         """
         # Get the current position of the agent
-        x, y = self.agent_position
+        x, y = self.agentPosition
         # Clear the current position of the agent in the grid
         self.grid[x][y] = ' '
 
@@ -42,7 +69,7 @@ class GridWorld:
             y += 1
 
         # Update the agent's position
-        self.agent_position = (x, y)
+        self.agentPosition = (x, y)
         # Place the agent in the new position in the grid
         self.grid[x][y] = 'A'
 
@@ -50,12 +77,12 @@ class GridWorld:
 grid_world = GridWorld()
 
 # Display the initial state of the grid
-grid_world.display_grid()
+grid_world.displayGrid()
 
 # Move the agent up and display the grid
-grid_world.move_agent('up')
-grid_world.display_grid()
+grid_world.moveAgent('up')
+grid_world.displayGrid()
 
 # Move the agent left and display the grid
-grid_world.move_agent('left')
-grid_world.display_grid()
+grid_world.moveAgent('left')
+grid_world.displayGrid()
