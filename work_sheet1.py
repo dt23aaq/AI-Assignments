@@ -12,43 +12,62 @@ class GridWorld:
         self.agentPosition = (rows // 2, cols // 2)
         # Place the agent (represented by 'A') in the grid
         self.grid[self.agentPosition[0]][self.agentPosition[1]] = 'A'
-        # Set the goal position (represented by 'G') in the grid
+
     def moveAgentWest(self):
-        current_row, current_col = self.agentPosition  # Getting the current position of the agent
-        # Check if the agent can move west (left)
+        """
+        Move the agent one step to the left (west). If the agent is at the western boundary,
+        it will print a message and not move.
+        """
+        current_row, current_col = self.agentPosition  # Get the current position of the agent
+
         if current_col > 0:
-            # Update the grid
-            self.grid[current_row][current_col] = 0  # Clear current position
-            current_col -= 1  # Move west
-            self.grid[current_row][current_col] = 1  # Mark new position
-            self.agentPosition = (current_row, current_col)  # Update agent's position
+            # Clear the current position
+            self.grid[current_row][current_col] = ' '
+            # Move west
+            current_col -= 1
+            # Mark the new position
+            self.grid[current_row][current_col] = 'A'
+            # Update the agent's position
+            self.agentPosition = (current_row, current_col)
         else:
-            print("Agent can't be move to west, agent is at the left of the grid.")
+            print("Agent can't be moved to the west, agent is at the left of the grid.")
 
     def moveAgentWestBouncy(self):
-        current_row, current_col = self.agentPosition
-        # Check if the agent can move west (left)
+        """
+        Move the agent one step to the left (west). If the agent is at the western boundary,
+        it will print a message and stay in the same position.
+        """
+        current_row, current_col = self.agentPosition  # Get the current position of the agent
+
         if current_col > 0:
-            # Update the grid
-            self.grid[current_row][current_col] = 0  # Clear current position
-            current_col -= 1  # Move west
-            self.grid[current_row][current_col] = 1  # Mark new position
-            self.agentPosition = (current_row, current_col)  # Update agent's position
+            # Clear the current position
+            self.grid[current_row][current_col] = ' '
+            # Move west
+            current_col -= 1
+            # Mark the new position
+            self.grid[current_row][current_col] = 'A'
+            # Update the agent's position
+            self.agentPosition = (current_row, current_col)
         else:
-            # If at the western boundary, reflect back
             print("Agent is at the western boundary, bouncing back.")
-            # No change to position, just print a message
+
     def moveNorthAroundTheWorld(self):
-        current_row, current_col = self.agentPosition
+        """
+        Move the agent one step to the north (up). If the agent moves off the top edge,
+        it will wrap around to the bottom of the grid.
+        """
+        current_row, current_col = self.agentPosition  # Get the current position of the agent
         # Move north (up)
         current_row -= 1
         # Wrap around if moving off the top edge
         if current_row < 0:
             current_row = self.rows - 1  # Wrap to the bottom
-        # Update the grid
-        self.grid[self.agentPosition[0]][self.agentPosition[1]] = 0  # Clear current position
-        self.grid[current_row][current_col] = 1  # Mark new position
-        self.agentPosition = (current_row, current_col)  # Update agent's position
+        # Clear the current position
+        self.grid[self.agentPosition[0]][self.agentPosition[1]] = ' '
+        # Mark the new position
+        self.grid[current_row][current_col] = 'A'
+        # Update the agent's position
+        self.agentPosition = (current_row, current_col)
 
     def displayGrid(self):
         """
