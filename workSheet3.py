@@ -45,8 +45,6 @@ def main():
         #reached the goal
         if current_label == "goal":
             break
-        #direction of the label
-        print(f"Agent moves {current_label}.")
         agent.move(current_label)
 
         # Check if the agent has moved out of the grid
@@ -56,3 +54,5 @@ def main():
 # Run the program
 if __name__ == "__main__":
     main()
+
+# Task 2
