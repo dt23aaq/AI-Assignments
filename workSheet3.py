@@ -56,3 +56,21 @@ if __name__ == "__main__":
     main()
 
 # Task 2
+def mini_controller(agent, world):
+    """
+    Controls the agent's behavior:
+    1. Perceives the label at the current position.
+    2. Stops if the label is "goal".
+    3. Moves in the direction of the label otherwise.
+    """
+    while True:
+        label = agent.perceive_label(world)  # Step 1: Perceive label
+        if label == "goal":  # Step 2: Check if label is goal
+            break
+        agent.move(label)  # Step 3: Move in the direction of the label
+        # Optional: Stop if agent moves out of the grid
+        if agent.x < 0 or agent.x >= 5 or agent.y < 0 or agent.y >= 5:
+            break
+agent = Agent(2, 2)
+
+mini_controller(agent, world)
