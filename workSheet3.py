@@ -74,3 +74,29 @@ def mini_controller(agent, world):
 agent = Agent(2, 2)
 
 mini_controller(agent, world)
+
+# Task 3
+def hierarchical_controller(agent, world):
+    """
+    Controls the agent's behavior:
+    1. Checks if the goal is reached.
+    2. If not, follows the direction label.
+    """
+    while True:
+        # Step 1: Check if the goal is reached
+        goal_label = agent.perceive_goal(world)
+        if goal_label == "goal":
+            print("Goal reached! Agent stops.")
+            break
+
+        # Step 2: Follow the direction label
+        direction_label = agent.perceive_direction(world)
+        agent.move(direction_label)
+
+        # Optional: Stop if agent moves out of the grid
+        if agent.x < 0 or agent.x >= 5 or agent.y < 0 or agent.y >= 5:
+            break
+
+agent = Agent(2, 2)
+
+hierarchical_controller(agent, world)
