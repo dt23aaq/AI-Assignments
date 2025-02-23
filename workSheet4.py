@@ -129,3 +129,79 @@ print("Edges leaving current node:", agent.sense_edges_leaving_current_node())
 # Print spanning tree nodes and edges
 print("Spanning tree nodes:", agent.get_spanning_tree_nodes())
 print("Spanning tree edges:", agent.get_spanning_tree_edges())
+
+class Agent:
+    def __init__(self, start_node, graph):
+        self.current_node = start_node
+        self.graph = graph
+        self.spanning_tree_nodes = set()
+        self.spanning_tree_edges = set()
+        self.spanning_tree_nodes.add(start_node)
+
+    def sense_current_node_name(self):
+        return self.current_node
+
+    def sense_edges_leaving_current_node(self):
+        return self.graph[self.current_node]
+
+    def add_to_spanning_tree(self, node, edge):
+        self.spanning_tree_nodes.add(node)
+        self.spanning_tree_edges.add(edge)
+
+    def get_spanning_tree_nodes(self):
+        return self.spanning_tree_nodes
+
+    def get_spanning_tree_edges(self):
+        return self.spanning_tree_edges
+
+    def move_to_node(self, node):
+        self.current_node = node
+
+    def choose_lowest_edge_preserving_tree(self):
+        """
+        Chooses the edge with the lowest value that preserves the tree properties.
+        Returns the chosen edge (as a tuple) or None if no valid edge is found.
+        """
+        edges = self.sense_edges_leaving_current_node()
+        lowest_edge = None
+        lowest_weight = float('inf')
+
+        for neighbor, weight in edges.items():
+            # Check if adding this edge would create a cycle
+            if neighbor not in self.spanning_tree_nodes:
+                if weight < lowest_weight:
+                    lowest_weight = weight
+                    lowest_edge = (self.current_node, neighbor, weight)
+
+        return lowest_edge
+
+# Define the graph using a dictionary
+graph = {
+    'v1': {'v2': 1},
+    'v2': {'v1': 1, 'v3': 2, 'v4': 3, 'v6': 6},
+    'v3': {'v2': 2, 'v4': 4},
+    'v4': {'v2': 3, 'v3': 4, 'v5': 5, 'v6': 7},
+    'v5': {'v4': 5},
+    'v6': {'v2': 6, 'v4': 7}
+}
+
+# Initialize the agent at 'v1'
+agent = Agent('v1', graph)
+
+# Example usage
+print("Current node:", agent.sense_current_node_name())
+print("Edges leaving current node:", agent.sense_edges_leaving_current_node())
+
+# Choose the lowest edge preserving tree properties
+lowest_edge = agent.choose_lowest_edge_preserving_tree()
+if lowest_edge:
+    print("Lowest edge preserving tree properties:", lowest_edge)
+    # Add the edge to the spanning tree and move to the new node
+    agent.add_to_spanning_tree(lowest_edge[1], (lowest_edge[0], lowest_edge[1]))
+    agent.move_to_node(lowest_edge[1])
+else:
+    print("No valid edge found.")
+
+# Print spanning tree nodes and edges
+print("Spanning tree nodes:", agent.get_spanning_tree_nodes())
+print("Spanning tree edges:", agent.get_spanning_tree_edges())
