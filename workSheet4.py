@@ -54,3 +54,8 @@ def dijkstra(start, target):
         current = current.previous
 
     return path[::-1], target.distance
+
+# Run Dijkstra's algorithm from v1 to v5
+start_node = v1
+target_node = v5
+path, distance = dijkstra(start_node, target_node)
