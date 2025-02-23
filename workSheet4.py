@@ -46,7 +46,7 @@ def dijkstra(start, target, graph):
     return path[::-1], distances[target]
 
 ###################
-# Task 2: Agent for Spanning Tree
+# Task 2-4: Agent with Memory
 ###################
 class Agent:
     def __init__(self, start_node, graph):
@@ -55,6 +55,17 @@ class Agent:
         self.spanning_tree_nodes = set()
         self.spanning_tree_edges = set()
         self.spanning_tree_nodes.add(start_node)
+
+        # Memory: Priority queue to store candidate edges (weight, node1, node2)
+        self.candidate_edges = []
+        self._initialize_candidate_edges()
+
+    def _initialize_candidate_edges(self):
+        """
+        Initialize candidate edges with edges from the start node.
+        """
+        for neighbor, weight in self.graph[self.current_node].items():
+            heapq.heappush(self.candidate_edges, (weight, self.current_node, neighbor))
 
     def sense_current_node_name(self):
         """
@@ -93,26 +104,33 @@ class Agent:
         """
         self.current_node = node
 
-###################
-# Task 3: Agent with Lowest-Edge Selection
-###################
     def choose_lowest_edge_preserving_tree(self):
         """
         Chooses the edge with the lowest value that preserves the tree properties.
         Returns the chosen edge (as a tuple) or None if no valid edge is found.
         """
-        edges = self.sense_edges_leaving_current_node()
-        lowest_edge = None
-        lowest_weight = float('inf')
+        while self.candidate_edges:
+            weight, node1, node2 = heapq.heappop(self.candidate_edges)
 
-        for neighbor, weight in edges:
             # Check if adding this edge would create a cycle
-            if neighbor not in self.spanning_tree_nodes:
-                if weight < lowest_weight:
-                    lowest_weight = weight
-                    lowest_edge = (self.current_node, neighbor, weight)
+            if node2 not in self.spanning_tree_nodes:
+                return (node1, node2, weight)
 
-        return lowest_edge
+        return None
+
+    def expand_candidate_edges(self):
+        """
+        Expands the candidate edges by adding edges from the current node.
+        """
+        for neighbor, weight in self.graph[self.current_node].items():
+            if neighbor not in self.spanning_tree_nodes:
+                heapq.heappush(self.candidate_edges, (weight, self.current_node, neighbor))
+
+    def get_candidate_edges(self):
+        """
+        Returns the current candidate edges.
+        """
+        return self.candidate_edges
 
 ###################
 # Main Program
@@ -122,40 +140,43 @@ if __name__ == "__main__":
     start_node = 'v1'
     target_node = 'v5'
     path, distance = dijkstra(start_node, target_node, graph)
-    print(f"Task 1: Shortest path from {start_node} to {target_node}: {path}")
-    print(f"Task 1: Total distance: {distance}\n")
+    print(f"Shortest path from {start_node} to {target_node}: {path}")
+    print(f"Total distance: {distance}\n")
 
-    # Task 2: Agent for Spanning Tree
+    # Task 2-4: Agent with Memory
     agent = Agent(start_node, graph)
-    print("Task 2: Current node:", agent.sense_current_node_name())
-    print("Task 2: Edges leaving current node:", agent.sense_edges_leaving_current_node())
+    print("Current node:", agent.sense_current_node_name())
+    print("Edges leaving current node:", agent.sense_edges_leaving_current_node())
+    print("Initial candidate edges:", agent.get_candidate_edges())
 
     # Move to v2 and add to spanning tree
-    agent.move_to_node('v2')
-    agent.add_to_spanning_tree('v2', ('v1', 'v2'))
-    print("Task 2: Current node:", agent.sense_current_node_name())
-    print("Task 2: Edges leaving current node:", agent.sense_edges_leaving_current_node())
-
-    # Move to v4 and add to spanning tree
-    agent.move_to_node('v4')
-    agent.add_to_spanning_tree('v4', ('v2', 'v4'))
-    print("Task 2: Current node:", agent.sense_current_node_name())
-    print("Task 2: Edges leaving current node:", agent.sense_edges_leaving_current_node())
-
-    # Print spanning tree nodes and edges
-    print("Task 2: Spanning tree nodes:", agent.get_spanning_tree_nodes())
-    print("Task 2: Spanning tree edges:", agent.get_spanning_tree_edges(), "\n")
-
-    # Task 3: Agent with Lowest-Edge Selection
     lowest_edge = agent.choose_lowest_edge_preserving_tree()
     if lowest_edge:
-        print("Task 3: Lowest edge preserving tree properties:", lowest_edge)
-        # Add the edge to the spanning tree and move to the new node
+        print("Lowest edge preserving tree properties:", lowest_edge)
         agent.add_to_spanning_tree(lowest_edge[1], (lowest_edge[0], lowest_edge[1]))
         agent.move_to_node(lowest_edge[1])
+        agent.expand_candidate_edges()
     else:
-        print("Task 3: No valid edge found.")
+        print("No valid edge found.")
+
+    print("Current node:", agent.sense_current_node_name())
+    print("Edges leaving current node:", agent.sense_edges_leaving_current_node())
+    print("Updated candidate edges:", agent.get_candidate_edges())
+
+    # Move to v4 and add to spanning tree
+    lowest_edge = agent.choose_lowest_edge_preserving_tree()
+    if lowest_edge:
+        print("Lowest edge preserving tree properties:", lowest_edge)
+        agent.add_to_spanning_tree(lowest_edge[1], (lowest_edge[0], lowest_edge[1]))
+        agent.move_to_node(lowest_edge[1])
+        agent.expand_candidate_edges()
+    else:
+        print("No valid edge found.")
+
+    print("Current node:", agent.sense_current_node_name())
+    print("Edges leaving current node:", agent.sense_edges_leaving_current_node())
+    print("Updated candidate edges:", agent.get_candidate_edges())
 
     # Print spanning tree nodes and edges
-    print("Task 3: Spanning tree nodes:", agent.get_spanning_tree_nodes())
-    print("Task 3: Spanning tree edges:", agent.get_spanning_tree_edges())
+    print("Spanning tree nodes:", agent.get_spanning_tree_nodes())
+    print("Spanning tree edges:", agent.get_spanning_tree_edges())
