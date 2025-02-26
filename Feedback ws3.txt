@@ -1,0 +1,59 @@
+###################
+# Task 1
+###################
+1M including all the labels in some form into the world design.
+
+	1M - Because the world_task1 design includes with direction labels and goal.
+	
+1M for a path to the goal being possible and the goal being in a corner
+	
+	0M - The goal is not in a corner, the corners of the 5x5 grid are (0,0), (0,4), (4,0), and (4,4).
+	
+1M for the agent having a function that reads the label the agent is on.
+
+	1M - Method perceive_label read the label as agent's current position and it is in the function.
+
+	
+###################
+# Task 2
+###################
+1M for the agent perceiving the label
+
+	1M - In mini_controller function it uses the perceive_label method to read the label at the agent's current position.
+	
+1M for the agent acting on the label.
+
+	1M - The mini_controller function moves the agent's base on the label perceived.
+	
+
+###################
+# Task 3
+###################
+1M for the changes to the world, that each field holds an extra piece of information. It does not
+matter if this is ”goal”/”not goal” or a boolean or some other clever (but probably over-engineered)
+solution.
+
+	0M - The world design (world_task1) does not appear to have been modified to include extra information in each field.
+
+1M for using two loops, one checking for a goal, one following the directions.
+
+	0M -  In hierarchical_controller function does not use two separate loops.
+	
+###################
+# Task 4
+###################
+1M for the changes to the world
+
+	1M - world_task4 function was placed randomly in one of the corners and it works well.
+
+1M for the a structural idea, some form of loop in which movement happens based on conditions
+
+	1M - The random_movement_controller function uses a loop to move the agent randomly until it reached it's goal or goes out of bounds.
+	
+1M if this works
+
+	1M - Task 4 code works as intended as per task, with the agent moving randomly until it reached it's goal or goes out of bounds.
+	
+###################
+# Total: 7/10
+###################
