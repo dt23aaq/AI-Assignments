@@ -143,3 +143,4 @@ if __name__ == "__main__":
         agent.add_to_spanning_tree(lowest_edge[1], (lowest_edge[0], lowest_edge[1]))
         agent.move_to_node(lowest_edge[1])
         agent.expand_candidate_edges()
+
